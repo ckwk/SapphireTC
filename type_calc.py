@@ -10,8 +10,6 @@ class Type:
         # Initialize type variables (eff for effectiveness)
         self.name = name
         self.eff_table = {}
-        self.eff_labels = []
-        self.eff_values = []
         self.notable_eff_table = {}
         self.notable_eff_labels = []
         self.notable_eff_values = []
@@ -19,17 +17,14 @@ class Type:
 
         # Assign effectiveness
         for i in range(0, len(type_headers)):  # For each type
+            self.eff_table[type_headers[i]] = type_chart.iat[index, i]
+
             if type_chart.iat[index, i] == 5:  # If effectiveness value is 5, make it 0.5
-                self.eff_values.append(0.5)
-            else:
-                self.eff_values.append(type_chart.iat[index, i])
-
-            self.eff_labels.append(type_headers[i])
-
-        self.eff_table = dict(zip(self.eff_labels, self.eff_values))  # Stitch labels and values into a dictionary
-        self.notable_eff_table = self.eff_table
+                self.eff_table[type_headers[i]] = 0.5
 
         # Set up notable effectiveness table
+        self.notable_eff_table = self.eff_table
+
         for k, v in self.notable_eff_table.items():
             if v != 1:
                 self.notable_eff_labels.append(k)
@@ -39,6 +34,7 @@ class Type:
     def get_offensive_effectiveness(self,type_list):
         ineffective_types = []
         s_effective_types = []
+
         for key, value in self.notable_eff_table.items():
             for pkmn_type in range(0, len(type_list)):
                 if key == type_list[pkmn_type].name:
