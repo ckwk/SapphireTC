@@ -49,13 +49,13 @@ def calc_type_combo_interaction(type1, type2, type3):
         if pkmn_type.name == type1 or pkmn_type.name == type2 or pkmn_type.name == type3:
             my_types.append(pkmn_type)
 
-    type1 = my_types[0]
-    type2 = my_types[1]
-    type3 = my_types[2]
-    type_combo_eff_table = type1.eff_table
+    first_type = my_types[0]
+    second_type = my_types[1]
+    thrid_type = my_types[2]
+    type_combo_eff_table = first_type.eff_table
 
-    for k, v in type1.eff_table:
-        type_combo_eff_table[k] = type1.eff_table[k] * type2.eff_table[k]
+    for k, v in first_type.eff_table:
+        type_combo_eff_table[k] = first_type.eff_table[k] * second_type.eff_table[k]
 
     return type_combo_eff_table
 
