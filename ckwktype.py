@@ -9,8 +9,6 @@ class Type:
         self.name = name
         self.eff_table = {}
         self.notable_eff_table = {}
-        self.notable_eff_labels = []
-        self.notable_eff_values = []
 
         # Assign effectiveness
         for i in range(0, len(type_headers)):  # For each type
@@ -24,9 +22,7 @@ class Type:
 
         for k, v in self.notable_eff_table.items():
             if v != 1:
-                self.notable_eff_labels.append(k)
-                self.notable_eff_values.append(v)
-        self.notable_eff_table = dict(zip(self.notable_eff_labels,self.notable_eff_values))
+                self.notable_eff_table[k] = v
 
     def get_offensive_effectiveness(self,type_list):
         ineffective_types = []
