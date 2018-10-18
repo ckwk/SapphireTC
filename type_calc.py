@@ -44,20 +44,23 @@ def calc_type_interaction(pkmn_type):
 
 def calc_type_combo_interaction(type1, type2, type3):
     my_types = []
+    not_very_effective_table = {}
+    super_effective_table = {}
 
     for pkmn_type in type_list:
         if pkmn_type.name == type1 or pkmn_type.name == type2 or pkmn_type.name == type3:
             my_types.append(pkmn_type)
 
-    first_type = my_types[0]
-    second_type = my_types[1]
-    third_type = my_types[2]
-    type_combo_eff_table = first_type.eff_table
+    for i in range(0, len(my_types)):
+        current_type = my_types[i]
+        type_n, type_s = calc_type_interaction(current_type.name)
+        for pkmn_type in type_n:
+            if pkmn_type.name in not_very_effective_table.keys():
+                not_very_effective_table[pkmn_type.name] = 0.25
+            else:
+                not_very_effective_table[pkmn_type.name] = 0.5
 
-    for k, v in first_type.eff_table.items():
-        type_combo_eff_table[k] = first_type.eff_table[k] * second_type.eff_table[k]
-
-    return type_combo_eff_table
+    return not_very_effective_table, super_effective_table
 
 
 # Print the effectiveness
@@ -81,5 +84,5 @@ for i in range(0, len(type_list)):
         # for pkmn_type in range(0, len(super_effective_d)):
         #     print(super_effective_d[pkmn_type].name)
 
-        print("That type is strong against:")
+        print("Type combo interactions:")
         print(not_very_effective_d)
