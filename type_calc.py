@@ -1,49 +1,9 @@
 import pandas
+from ckwktype import Type
 
 # Create type chart references
 type_chart = pandas.read_csv('type_chartV2.csv', index_col='type')
 type_headers = list(type_chart)
-
-
-class Type:
-    def __init__(self, name, index):
-        # Initialize type variables (eff for effectiveness)
-        self.name = name
-        self.eff_table = {}
-        self.notable_eff_table = {}
-        self.notable_eff_labels = []
-        self.notable_eff_values = []
-        self.multiplier = 1
-
-        # Assign effectiveness
-        for i in range(0, len(type_headers)):  # For each type
-            self.eff_table[type_headers[i]] = type_chart.iat[index, i]
-
-            if type_chart.iat[index, i] == 5:  # If effectiveness value is 5, make it 0.5
-                self.eff_table[type_headers[i]] = 0.5
-
-        # Set up notable effectiveness table
-        self.notable_eff_table = self.eff_table
-
-        for k, v in self.notable_eff_table.items():
-            if v != 1:
-                self.notable_eff_labels.append(k)
-                self.notable_eff_values.append(v)
-        self.notable_eff_table = dict(zip(self.notable_eff_labels,self.notable_eff_values))
-
-    def get_offensive_effectiveness(self,type_list):
-        ineffective_types = []
-        s_effective_types = []
-
-        for key, value in self.notable_eff_table.items():
-            for pkmn_type in range(0, len(type_list)):
-                if key == type_list[pkmn_type].name:
-                    if value < 1:
-                        ineffective_types.append(type_list[pkmn_type])
-                    elif value > 1:
-                        s_effective_types.append(type_list[pkmn_type])
-        return ineffective_types, s_effective_types
-
 
 # Initialize all the types and type list
 normal = Type('NO', 0)
@@ -75,13 +35,22 @@ for i in range(0, len(type_list)):
     if user_input == type_list[i].name:
 
         # Get the types that the chosen type is (not) effective against
-        not_very_effective, super_effective = type_list[i].get_offensive_effectiveness(type_list)
+        not_very_effective_o, super_effective_o = type_list[i].get_offensive_effectiveness(type_list)
+        not_very_effective_d, super_effective_d = type_list[i].get_defensive_effectiveness(type_list)
 
         # Actually printing the effectiveness
         print("That type is super effective against:")
-        for pkmn_type in range(0, len(super_effective)):
-            print(super_effective[pkmn_type].name)
+        for pkmn_type in range(0, len(super_effective_o)):
+            print(super_effective_o[pkmn_type].name)
 
         print("That type is not very effective against:")
-        for pkmn_type in range(0, len(not_very_effective)):
-            print(not_very_effective[pkmn_type].name)
+        for pkmn_type in range(0, len(not_very_effective_o)):
+            print(not_very_effective_o[pkmn_type].name)
+
+        print("That type is weak to:")
+        for pkmn_type in range(0, len(super_effective_d)):
+            print(super_effective_d[pkmn_type].name)
+
+        print("That type is strong against:")
+        for pkmn_type in range(0, len(not_very_effective_d)):
+            print(not_very_effective_d[pkmn_type].name)
