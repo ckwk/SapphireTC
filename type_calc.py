@@ -19,19 +19,54 @@ ice = Type('IC', 14)
 dragon = Type('DR', 15)
 dark = Type('DA', 16)
 fairy = Type('FA', 17)
+na = Type('NA', 18)
 type_list = [normal, fight, flying, poison, ground, rock, bug, ghost, steel,
-             fire, water, grass, electric, psychic, ice, dragon, dark, fairy]
+             fire, water, grass, electric, psychic, ice, dragon, dark, fairy, na]
 
 # Get user input
 user_input = input("Type a Pokemon Type: ")
+
+
+def calc_move_interaction(move_type):
+    for i in range(0, len(type_list)):
+        if move_type == type_list[i].name:
+            # Get the types that the chosen type is (not) effective against
+            not_very_effective_o, super_effective_o = type_list[i].get_offensive_effectiveness(type_list)
+            return not_very_effective_o, super_effective_o
+
+
+def calc_type_interaction(pkmn_type):
+    for i in range(0, len(type_list)):
+        if pkmn_type == type_list[i].name:
+            not_very_effective_d, super_effective_d = type_list[i].get_defensive_effectiveness(type_list)
+            return not_very_effective_d, super_effective_d
+
+
+def calc_type_combo_interaction(type1, type2, type3):
+    my_types = []
+
+    for pkmn_type in type_list:
+        if pkmn_type.name == type1 or pkmn_type.name == type2 or pkmn_type.name == type3:
+            my_types.append(pkmn_type)
+
+    type1 = my_types[0]
+    type2 = my_types[1]
+    type3 = my_types[2]
+    type_combo_eff_table = type1.eff_table
+
+    for k, v in type1.eff_table:
+        type_combo_eff_table[k] = type1.eff_table[k] * type2.eff_table[k]
+
+    return type_combo_eff_table
+
 
 # Print the effectiveness
 for i in range(0, len(type_list)):
     if user_input == type_list[i].name:
 
         # Get the types that the chosen type is (not) effective against
-        not_very_effective_o, super_effective_o = type_list[i].get_offensive_effectiveness(type_list)
-        not_very_effective_d, super_effective_d = type_list[i].get_defensive_effectiveness(type_list)
+        not_very_effective_o, super_effective_o = calc_move_interaction(user_input)
+        not_very_effective_d = calc_type_combo_interaction(user_input, 'FR', 'NA')
 
         # Actually printing the effectiveness
         print("That type is super effective against:")
@@ -42,10 +77,9 @@ for i in range(0, len(type_list)):
         for pkmn_type in range(0, len(not_very_effective_o)):
             print(not_very_effective_o[pkmn_type].name)
 
-        print("That type is weak to:")
-        for pkmn_type in range(0, len(super_effective_d)):
-            print(super_effective_d[pkmn_type].name)
+        # print("That type is weak to:")
+        # for pkmn_type in range(0, len(super_effective_d)):
+        #     print(super_effective_d[pkmn_type].name)
 
         print("That type is strong against:")
-        for pkmn_type in range(0, len(not_very_effective_d)):
-            print(not_very_effective_d[pkmn_type].name)
+        print(not_very_effective_d)
