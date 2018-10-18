@@ -36,15 +36,17 @@ class Type:
                 self.notable_eff_values.append(v)
         self.notable_eff_table = dict(zip(self.notable_eff_labels,self.notable_eff_values))
 
-    def print_effectiveness(self):
-        print("Not very effective against:")
-        for low_k, low_v in self.notable_eff_table.items():
-            if low_v < 1:
-                print(low_k)
-        print("Super effective against:")
-        for high_k, high_v in self.notable_eff_table.items():
-            if high_v > 1:
-                print(high_k)
+    def get_offensive_effectiveness(self,type_chart):
+        ineffective_types = []
+        s_effective_types = []
+        for key, value in self.notable_eff_table.items():
+            for pkmn_type in range(0, len(type_chart)):
+                if key == type_chart[pkmn_type].name:
+                    if value < 1:
+                        ineffective_types.append(type_chart[pkmn_type])
+                    elif value > 1:
+                        s_effective_types.append(type_chart[pkmn_type])
+        return ineffective_types, s_effective_types
 
 
 # Initialize all the types and type list
@@ -76,6 +78,4 @@ user_input = input("Type a Pokemon Type: ")
 for i in range(0, len(type_list)):
     if user_input == type_list[i].name:
         current_type = type_list[i]
-        current_type.print_effectiveness()
-
-
+        not_very_effective, super_effective = current_type.get_offensive_effectiveness(type_list)
