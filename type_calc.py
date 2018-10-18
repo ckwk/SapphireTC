@@ -77,3 +77,5 @@ for i in range(0, len(type_list)):
     if user_input == type_list[i].name:
         current_type = type_list[i]
         current_type.print_effectiveness()
+
+
