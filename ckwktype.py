@@ -3,6 +3,7 @@ import pandas
 type_chart = pandas.read_csv('type_chartV2.csv', index_col='type')
 type_headers = list(type_chart)
 
+
 class Type:
     def __init__(self, name, index):
         # Initialize type variables (eff for effectiveness)

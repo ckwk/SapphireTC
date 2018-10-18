@@ -1,9 +1,4 @@
-import pandas
 from ckwktype import Type
-
-# Create type chart references
-type_chart = pandas.read_csv('type_chartV2.csv', index_col='type')
-type_headers = list(type_chart)
 
 # Initialize all the types and type list
 normal = Type('NO', 0)
