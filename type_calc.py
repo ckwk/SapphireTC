@@ -51,10 +51,10 @@ def calc_type_combo_interaction(type1, type2, type3):
 
     first_type = my_types[0]
     second_type = my_types[1]
-    thrid_type = my_types[2]
+    third_type = my_types[2]
     type_combo_eff_table = first_type.eff_table
 
-    for k, v in first_type.eff_table:
+    for k, v in first_type.eff_table.items():
         type_combo_eff_table[k] = first_type.eff_table[k] * second_type.eff_table[k]
 
     return type_combo_eff_table
@@ -66,7 +66,7 @@ for i in range(0, len(type_list)):
 
         # Get the types that the chosen type is (not) effective against
         not_very_effective_o, super_effective_o = calc_move_interaction(user_input)
-        not_very_effective_d = calc_type_combo_interaction(user_input, 'FR', 'NA')
+        not_very_effective_d = calc_type_combo_interaction(user_input, 'GR', 'NA')
 
         # Actually printing the effectiveness
         print("That type is super effective against:")
