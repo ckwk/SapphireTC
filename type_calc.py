@@ -74,7 +74,7 @@ def calc_type_combo_interaction(type1, type2, type3):
             else:
                 eff_table[pkmn_type.name] = pkmn_type.eff_table[current_type.name]  # Put it into the dictionary
 
-        # Reapeat for all of the ineffective types
+        # Repeat for all of the ineffective types
         for pkmn_type in type_n:
             if pkmn_type.name in eff_table.keys():
                 eff_table[pkmn_type.name] = pkmn_type.eff_table[current_type.name] * eff_table[pkmn_type.name]
