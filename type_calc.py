@@ -44,6 +44,7 @@ def calc_type_interaction(pkmn_type):
 
 def calc_type_combo_interaction(type1, type2, type3):
     my_types = []
+    eff_table = {}
     not_very_effective_table = {}
     super_effective_table = {}
 
@@ -54,19 +55,20 @@ def calc_type_combo_interaction(type1, type2, type3):
     for i in range(0, len(my_types)):
         current_type = my_types[i]
         type_n, type_s = calc_type_interaction(current_type.name)
-        for pkmn_type in type_n:
-            if pkmn_type.name in not_very_effective_table.keys():
-                not_very_effective_table[pkmn_type.name] = 0.25
-            else:
-                not_very_effective_table[pkmn_type.name] = 0.5
 
         for pkmn_type in type_s:
-            if pkmn_type.name in super_effective_table.keys():
-                super_effective_table[pkmn_type.name] = 4
+            if pkmn_type.name in eff_table.keys():
+                eff_table[pkmn_type.name] = pkmn_type.eff_table[current_type.name] * eff_table[pkmn_type.name]
             else:
-                super_effective_table[pkmn_type.name] = 2
+                eff_table[pkmn_type.name] = pkmn_type.eff_table[current_type.name]
 
-    return not_very_effective_table, super_effective_table
+        for pkmn_type in type_n:
+            if pkmn_type.name in eff_table.keys():
+                eff_table[pkmn_type.name] = pkmn_type.eff_table[current_type.name] * eff_table[pkmn_type.name]
+            else:
+                eff_table[pkmn_type.name] = pkmn_type.eff_table[current_type.name]
+
+    return eff_table
 
 
 # Print the effectiveness
@@ -75,7 +77,7 @@ for i in range(0, len(type_list)):
 
         # Get the types that the chosen type is (not) effective against
         not_very_effective_o, super_effective_o = calc_move_interaction(user_input)
-        not_very_effective_d = calc_type_combo_interaction(user_input, 'GR', 'NA')
+        not_very_effective_d = calc_type_combo_interaction(user_input, 'GR', 'WA')
 
         # Actually printing the effectiveness
         print("That type is super effective against:")
