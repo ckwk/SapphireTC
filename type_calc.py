@@ -60,6 +60,12 @@ def calc_type_combo_interaction(type1, type2, type3):
             else:
                 not_very_effective_table[pkmn_type.name] = 0.5
 
+        for pkmn_type in type_s:
+            if pkmn_type.name in super_effective_table.keys():
+                super_effective_table[pkmn_type.name] = 4
+            else:
+                super_effective_table[pkmn_type.name] = 2
+
     return not_very_effective_table, super_effective_table
 
 
